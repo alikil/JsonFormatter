@@ -11,11 +11,11 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "lib": ["DOM", "ESNext.String", "ESNext"],
     "jsx": "react",
     "paths": {
       "*": ["node_modules/*"]
-    },
-    "lib": ["DOM", "ESNext.String", "ESNext"]
+    }
   },
   "include": ["src/**/*"]
 }
