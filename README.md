@@ -6,6 +6,10 @@
 You can paste your JSON from websockets or another hard json list to see all pretty visible.
 Collapse not interested parts or copy important parts and work with picked data on your code.
 
+## Example
+
+![Example](public/Screenshot_1.png)
+
 ## Tech stack
 
 Electron.
