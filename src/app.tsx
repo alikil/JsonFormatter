@@ -1,113 +1,98 @@
 import { Button, Input } from "antd";
 import * as React from "react";
+import { useState } from "react";
 import * as ReactDOM from "react-dom";
-import ReactJson from "react-json-view";
+import JsonViewer from "searchable-react-json-view";
 
 const { TextArea } = Input;
-export class FirstComponent extends React.Component<{}> {
-  public declare state: {
-    textbox1: string;
-    textbox2: string;
-  };
+export const MainPage: React.FC = () => {
+  const [inputField, setDataInput] = useState("");
+  const [outputField, setDataOutput] = useState({});
+  const [search, setSearch] = useState("");
+  const [searchRun, setSearchRun] = useState("");
 
-  constructor(props: any) {
-    super(props);
-    this.state = { textbox1: "", textbox2: "{}" };
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setDataInput(e.target.value);
 
-    this.handleChange1 = this.handleChange1.bind(this);
-    this.handleChange2 = this.handleChange2.bind(this);
-  }
-
-  handleChange1(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    this.setState({ textbox1: event.target.value });
-  }
-  handleChange2(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    this.setState({ textbox2: event.target.value });
-  }
-
-  handleGenClick(event: any) {
+  const handleGenTree = () => {
     try {
-      const box = this.state.textbox1;
+      const box = inputField;
       const sl1 = box[0] == `"` ? box.substring(1) : box;
       const sl2 =
         sl1[sl1.length - 1] == `"` ? sl1.substring(0, sl1.length - 1) : sl1;
       const sl21 = sl2.replaceAll(`\\"`, `"`);
-      const sl22 = sl21.replaceAll(`\\\"`, `"`);
+      const sl22 = sl21.replaceAll(`\\"`, `"`);
       const sl3 = JSON.parse(sl22);
-      const sl4 = JSON.stringify(sl3);
-      this.setState({ textbox2: sl4 });
+      setDataOutput(sl3);
     } catch (error) {
-      this.setState({
-        textbox2: JSON.stringify({ error: error.toString() }),
-      });
+      setDataOutput({ error: error.toString() } || {});
     }
-  }
+  };
 
-  handleCleanClick(event: any) {
-    this.setState({ textbox1: "", textbox2: "{}" });
-    // <JSONPretty id="json-pretty" data={this.state.textbox2}></JSONPretty>
-  }
+  const handleCleanClick = () => {
+    setDataInput("");
+    setDataOutput({});
+  };
 
-  render() {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "top",
-          alignItems: "top",
-          backgroundColor: "#F5FCFF",
-        }}
-      >
-        <div style={{ flex: 2, margin: "5px", width: "100%" }}>
-          <div>
-            {" "}
-            <h1 style={{ backgroundColor: "red", fontSize: "18px" }}>
-              Stringified JSON
-            </h1>{" "}
-          </div>
-          <TextArea
-            value={this.state.textbox1}
-            rows={20}
-            onChange={(e) => this.handleChange1(e)}
-          />
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "top",
+        alignItems: "top",
+        backgroundColor: "#F5FCFF",
+      }}
+    >
+      <div style={{ flex: 2, margin: "5px", width: "100%" }}>
+        <div>
+          {" "}
+          <h1 style={{ backgroundColor: "red", fontSize: "18px" }}>
+            Stringified JSON
+          </h1>{" "}
         </div>
-        <div style={{ flex: 0.3, marginTop: "150px" }}>
-          <div style={{ marginBottom: "5px" }}>
-            <Button
-              onClick={(e) => this.handleGenClick(e)}
-              type="primary"
-              size="middle"
-            >
-              Generate
-            </Button>
-          </div>
-          <div>
-            <Button
-              onClick={(e) => this.handleCleanClick(e)}
-              type="primary"
-              size="middle"
-            >
-              Clear
-            </Button>
-          </div>
+        <TextArea value={inputField} rows={20} onChange={handleInput} />
+      </div>
+      <div style={{ flex: 0.3, marginTop: "150px" }}>
+        <div style={{ marginBottom: "5px" }}>
+          <Button onClick={handleGenTree} type="primary" size="middle">
+            Generate
+          </Button>
         </div>
-        <div style={{ flex: 5, margin: "5px" }}>
-          <div>
-            {" "}
-            <h1 style={{ backgroundColor: "green", fontSize: "18px" }}>
-              Fixed JSON
-            </h1>{" "}
-          </div>
-          <ReactJson src={JSON.parse(this.state.textbox2)} />;
+        <div>
+          <Button onClick={handleCleanClick} type="primary" size="middle">
+            Clear
+          </Button>
         </div>
       </div>
-    );
-  }
-}
+      <div style={{ flex: 5, margin: "5px" }}>
+        <div>
+          {" "}
+          <h1 style={{ backgroundColor: "green", fontSize: "18px" }}>
+            Fixed JSON
+          </h1>{" "}
+        </div>
+        <label style={{ marginBottom: "5px" }}>Search: </label>
+        <input value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Button onClick={() => setSearchRun(search)}>Search</Button>
+        <JsonViewer
+          highlightSearch={(searchRun.length > 4 && searchRun) || ""}
+          src={outputField}
+          theme="google"
+          iconStyle="square"
+          indentWidth={4}
+          collapsed={true}
+          displayObjectSize={false}
+          displayDataTypes={false}
+        />
+        ;
+      </div>
+    </div>
+  );
+};
 
 function render() {
-  ReactDOM.render(<FirstComponent />, document.body);
+  ReactDOM.render(<MainPage />, document.body);
 }
 
 render();

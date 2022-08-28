@@ -1,8 +1,8 @@
 {
   "name": "jsonformatter",
   "productName": "jsonformatter",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "version": "2.0.0",
+  "description": "Websocket ot stringified weak json to normal json wit search",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -19,27 +19,24 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./public/json_115517.ico"
+      },
       "makers": [
         {
-          "name": "@electron-forge/maker-squirrel",
+          "name": "@electron-forge/maker-wix",
           "config": {
-            "name": "jsonformatter"
+            "language": 1033,
+            "manufacturer": "Serhii Kalachnikov",
+            "productName": "JsonFormatter_2.0",
+            "version": "2.0.0",
+            "description": "Websocket ot stringified weak json to normal json wit search",
+            "icon": "./public/json_115517.ico",
+            "appIconPath": "./public/json_115517.ico",
+            "upgradeCode": "5e5e4e10-2b41-45c1-b6da-0bfe030d19ff",
+            "features": { "autoUpdate":true },
+            "shortcutName":"JsonFormatter_2.0"
           }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
         }
       ],
       "plugins": [
@@ -76,6 +73,7 @@
     "@vercel/webpack-asset-relocator-loader": "1.7.0",
     "css-loader": "^6.0.0",
     "electron": "15.3.1",
+    "electron-wix-msi": "^4.0.0",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.20.0",
     "fork-ts-checker-webpack-plugin": "^6.0.1",
@@ -85,10 +83,12 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "@electron-forge/maker-wix": "^6.0.0-beta.65",
     "antd": "^4.16.13",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-json-view": "^1.21.3"
+    "react-json-view": "^1.21.3",
+    "searchable-react-json-view": "0.0.8"
   }
 }
