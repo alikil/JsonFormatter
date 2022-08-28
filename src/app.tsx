@@ -85,7 +85,6 @@ export const MainPage: React.FC = () => {
           displayObjectSize={false}
           displayDataTypes={false}
         />
-        ;
       </div>
     </div>
   );
